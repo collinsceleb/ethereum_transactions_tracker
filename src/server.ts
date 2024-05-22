@@ -1,5 +1,5 @@
 import createApp from "./app";
-// import {connectToDatabase} from "./models/index";
+import {connectToDatabase} from "./index";
 import CustomLogger from "./common/utils/errorLogger";
 import config from "./common/config/index";
 
@@ -12,7 +12,7 @@ const appServer = async () => {
 
 const startApp = async () => {
   try {
-    // await connectToDatabase();
+    await connectToDatabase;
     await appServer();
     return CustomLogger.info(`connect to the database and server running on port ${config.port}`);
   } catch (e) {

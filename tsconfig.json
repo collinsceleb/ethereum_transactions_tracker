@@ -21,6 +21,11 @@
     "importHelpers": true,
     "baseUrl": "src",
   },
-  // "include": ["../../packages/**/*"],
+//   "ts-node": {
+//         "esm": true
+//     },
+//   "include": [
+//     "./**/*.ts"
+// ],
   "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
 }
