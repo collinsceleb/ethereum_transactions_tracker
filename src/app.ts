@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import cors from "cors";
-// import { mountRoutePath } from "./routes/index";
+import { mountRoutePath } from "./routes/router";
 // import config from "./common/config/index";
 
 
@@ -36,7 +36,7 @@ const createApp = async () => {
   // setup the logger
   app.use(morgan("combined", { stream: accessLogStream }));
 
-  // mountRoutePath(app);
+  mountRoutePath(app);
 
   return server;
 }
