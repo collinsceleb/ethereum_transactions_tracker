@@ -16,8 +16,8 @@ class TransactionController {
 
   public getEthBlockByNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const blockNumber = await this.transactionService.getEthBlockByNumber();
-      res.status(201).json({ data: true, message: blockNumber  });
+      const transaction = await this.transactionService.getEthBlockByNumber();
+      res.status(201).json({ data: true, message: transaction  });
     } catch (error) {
       next(error);
     }

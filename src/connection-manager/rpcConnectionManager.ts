@@ -1,16 +1,16 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { RpcTransactionEndpoint } from "../common/utils/rpcTransactionEndpoint";
+import { RpcEndpointCheck } from "../common/utils/rpcEndpointCheck";
 
 export class RpcConnectionManager {
-  endpoints: RpcTransactionEndpoint[];
+  endpoints: RpcEndpointCheck[];
   currentIndex: number;
 
   constructor(endpoints: string[]) {
-    this.endpoints = endpoints.map(url => new RpcTransactionEndpoint(url));
+    this.endpoints = endpoints.map(url => new RpcEndpointCheck(url));
     this.currentIndex = 0;
   }
 
-  getCurrentEndpoint(): RpcTransactionEndpoint {
+  getCurrentEndpoint(): RpcEndpointCheck {
     return this.endpoints[this.currentIndex];
   }
 

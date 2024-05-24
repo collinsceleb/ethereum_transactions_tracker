@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HttpException } from '../../exceptions/HttpException';
 
-export class RpcTransactionEndpoint {
+export class RpcEndpointCheck {
   url: string;
   isWorking: boolean;
 

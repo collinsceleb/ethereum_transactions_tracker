@@ -5,7 +5,7 @@ import { Transaction } from "../../entity/Transaction";
 import { AppDataSource } from "../../data-source";
 
 class TransactionService {
-  private rpcEndpoints = ['https://eth.public-rpc.com'];
+  private rpcEndpoints = ['https://rpc.ankr.com/eth', 'https://eth.llamarpc.com', 'https://ethereum-rpc.publicnode.com'];
 
   private rpcConnectionManager = new RpcConnectionManager(this.rpcEndpoints);
 
@@ -24,8 +24,7 @@ class TransactionService {
 
     try {
       const ethBlockNumber = await this.rpcConnectionManager.makeRequest('', 'POST', payload);
-      return ethBlockNumber
-      console.log('ethBlockNumber:', ethBlockNumber);
+      return ethBlockNumber;
     } catch (error) {
       throw new HttpException(400, 'No data returned');
       // console.error('Error:', error);
@@ -34,9 +33,7 @@ class TransactionService {
 
   async getEthBlockByNumber() {
     const getBlockNumber = await this.getEthBlockNumber();
-    const blockNumber = getBlockNumber.result
-    console.log('getBlockNumber:', blockNumber);
-
+    const blockNumber = getBlockNumber.result;
 
     const payload = {
       jsonrpc: '2.0',
@@ -55,19 +52,18 @@ class TransactionService {
       const ethBlockNumberResponseData = JSON.stringify(ethBlockNumber);
       const parseData = JSON.parse(ethBlockNumberResponseData);
       const transactionsData = ethBlockNumber.result.transactions;
-       for (let index = 0; index < transactionsData.length; index++) {
-         console.log('sender: ', parseData.result.transactions[index]['from']);
-         const transaction = new Transaction()
-         transaction.sender = parseData.result.transactions[index]['from'];
-         transaction.receiver = parseData.result.transactions[index]['to'];
-         transaction.blockHash = parseData.result.transactions[index]['blockHash'];
-         transaction.blockNumber = parseData.result.transactions[index]['blockNumber'];
-         transaction.gasPrice = parseInt(parseData.result.transactions[index]['gasPrice'], 16).toString();
-         transaction.value = parseInt(parseData.result.transactions[index]['value'], 16).toString();
-          transaction.transactionHash = parseData.result.transactions[index]['hash'];
-         await AppDataSource.manager.save(transaction)
-       }
-      // console.log('parseData:', parseData);
+      for (let index = 0; index < transactionsData.length; index++) {
+        const transaction = new Transaction();
+        transaction.sender = parseData.result.transactions[index]['from'];
+        transaction.receiver = parseData.result.transactions[index]['to'];
+        transaction.blockHash = parseData.result.transactions[index]['blockHash'];
+        transaction.blockNumber = parseData.result.transactions[index]['blockNumber'];
+        transaction.gasPrice = parseInt(parseData.result.transactions[index]['gasPrice'], 16).toString();
+        transaction.value = parseInt(parseData.result.transactions[index]['value'], 16).toString();
+        transaction.transactionHash = parseData.result.transactions[index]['hash'];
+        await AppDataSource.manager.save(transaction);
+      }
+      return transactionsData
     } catch (error) {
       throw new HttpException(400, 'No data returned');
       // console.error('Error:', error);
