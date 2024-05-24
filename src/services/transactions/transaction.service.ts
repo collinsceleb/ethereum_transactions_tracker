@@ -1,4 +1,3 @@
-import axios, { AxiosRequestConfig } from "axios";
 import { RpcConnectionManager } from "../../connection-manager/rpcConnectionManager";
 import { HttpException } from "../../exceptions/HttpException";
 import { Transaction } from "../../entity/Transaction";

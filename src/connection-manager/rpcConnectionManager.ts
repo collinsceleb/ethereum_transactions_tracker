@@ -14,7 +14,7 @@ export class RpcConnectionManager {
     return this.endpoints[this.currentIndex];
   }
 
-  switchToNext(): void {
+  switchToNextEndpoint(): void {
     this.currentIndex = (this.currentIndex + 1) % this.endpoints.length;
   }
 
@@ -22,10 +22,9 @@ export class RpcConnectionManager {
     for (let i = 0; i < this.endpoints.length; i++) {
       const currentEndpoint = this.getCurrentEndpoint();
       if (!currentEndpoint.isWorking) {
-        this.switchToNext();
+        this.switchToNextEndpoint();
         continue;
       }
-
       try {
         const url = `${currentEndpoint.url}${path}`;
         const response: AxiosResponse = await axios.request({ url, method, data, ...config });
@@ -38,7 +37,7 @@ export class RpcConnectionManager {
         currentEndpoint.isWorking = false;
       }
 
-      this.switchToNext();
+      this.switchToNextEndpoint();
     }
     throw new Error('All RPC endpoints are down.');
   }
