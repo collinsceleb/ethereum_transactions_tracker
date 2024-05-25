@@ -16,8 +16,6 @@ const environmentConfig = {
     password: process.env.DB_PASSWORD || "my-top-secret", // Mysql password
     db: process.env.DB_NAME || "ethereumtransactions",
     type: process.env.DB_TYPE || "mysql",
-    sandboxDatabase: process.env.sandboxDatabase,
-    productionDatabase: process.env.productionDatabase,
   },
 };
 
