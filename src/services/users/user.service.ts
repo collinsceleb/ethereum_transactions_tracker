@@ -22,7 +22,6 @@ class UserService {
     const newUser = new User();
     newUser.email = email;
     newUser.password = hashedPassword;
-    newUser.token = "";
     await AppDataSource.manager.save(newUser);
     delete newUser.password;
     delete newUser.token;

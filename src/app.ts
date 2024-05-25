@@ -7,8 +7,6 @@ import path from "path";
 import http from "http";
 import cors from "cors";
 import { mountRoutePath } from "./routes/router";
-// import config from "./common/config/index";
-
 
 const createApp = async () => {
   const app: express.Application = express();
