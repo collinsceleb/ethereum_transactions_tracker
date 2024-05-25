@@ -2,7 +2,9 @@ import { RpcConnectionManager } from "../../connection-manager/rpcConnectionMana
 import { HttpException } from "../../exceptions/HttpException";
 import { Transaction } from "../../entity/Transaction";
 import { AppDataSource } from "../../data-source";
+import { Service } from "typedi";
 
+@Service()
 class TransactionService {
   private rpcEndpoints = ['https://rpc.ankr.com/eth', 'https://eth.llamarpc.com', 'https://ethereum-rpc.publicnode.com'];
 
