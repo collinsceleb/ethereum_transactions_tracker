@@ -1,6 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { RpcEndpointCheck } from "../common/utils/rpcEndpointCheck";
-
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { RpcEndpointCheck } from '../utils/rpcEndpointCheck';
+import { Service } from 'typedi';
+@Service()
 export class RpcConnectionManager {
   endpoints: RpcEndpointCheck[];
   currentIndex: number;

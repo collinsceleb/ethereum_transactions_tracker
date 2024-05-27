@@ -3,7 +3,7 @@ import { HttpException } from "./exceptions/HttpException";
 import path from "path";
 
 class SocketController {
-  static async getIndex(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public getIndex = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
     // const __dirname = dirname(fileURLToPath(import.meta.url));
     try {
       const filePath = path.join(__dirname, '../public', 'index.html');
@@ -14,10 +14,10 @@ class SocketController {
       throw new HttpException(400, error);
     }
   }
-  static async getSocket(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public getSocket = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // const __dirname = dirname(fileURLToPath(import.meta.url));
     try {
-      res.redirect("/api/ethereum-transaction/socket/index")
+      res.redirect('/api/ethereum-transaction/socket/index');
     } catch (error) {
       throw new HttpException(400, error);
     }

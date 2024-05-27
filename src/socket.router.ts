@@ -5,7 +5,8 @@ import Container from 'typedi';
 dotenv.config();
 
 const router = express.Router();
-router.get('/index', SocketController.getIndex);
-router.get('/get-socket', SocketController.getSocket);
+const socketController = new SocketController()
+router.get('/index', socketController.getIndex);
+router.get('/get-socket', socketController.getSocket);
 
 export default router;

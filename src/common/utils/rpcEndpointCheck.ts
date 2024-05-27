@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HttpException } from '../../exceptions/HttpException';
+import { Service } from 'typedi';
 
+@Service()
 export class RpcEndpointCheck {
   url: string;
   isWorking: boolean;
@@ -12,7 +14,7 @@ export class RpcEndpointCheck {
 
   async checkEndpointHealth(): Promise<void> {
     try {
-      // Check if the url is healthy and working
+      // This Checks if the url is healthy and working
       const response: AxiosResponse = await axios.get(`${this.url}/health`);
       if (response.status === 200) {
         this.isWorking = true;

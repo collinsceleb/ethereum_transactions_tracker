@@ -11,7 +11,7 @@ class UserController {
     try {
       const {email, password} = req.body
       const createNewUser = await this.userService.createUser(email, password)
-      res.status(200).json({ data: createNewUser, message: true });
+      res.status(201).json({ data: createNewUser, message: true });
     } catch (error) {
       next(error);
     }

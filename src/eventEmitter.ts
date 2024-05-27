@@ -22,7 +22,7 @@ export class EventEmitterService {
   private static server: Server;
 
   static async emitEvent(event: Event) {
-    console.log('Emitting event:', event);
+    // console.log('Emitting event:', event);
 
     const eventString = JSON.stringify(event);
     const cacheEvent = async (key: string) => {
@@ -39,6 +39,8 @@ export class EventEmitterService {
 
     if (event.sender) {
       this.server.to(`sender:${event.sender}`).emit('event', event);
+      // console.log("event.sender", event.sender);
+
       await cacheEvent(`sender:${event.sender}`);
     }
     if (event.receiver) {
@@ -52,7 +54,7 @@ export class EventEmitterService {
       await cacheEvent(`address:${event.receiver}`);
     }
 
-    const amountInUsd = (event.amount as unknown as number) * this.ethPrice;
+    const amountInUsd = (event.amount) * this.ethPrice;
     if (amountInUsd > 0 && amountInUsd <= 100) {
       this.server.to('range:0-100').emit('event', event);
       await cacheEvent('range:0-100');

@@ -11,7 +11,7 @@ export const mountRoutePath = (app: { use: (routePath: string, router: Router) =
   apiHandle.use('/transaction', Transaction);
   apiHandle.use('/user', User);
   apiHandle.use('/auth', Authentication);
-  apiHandle.use('/socket', Socket);
+  apiHandle.use('/socket', authenticationService.authenticate, Socket);
 
 
 

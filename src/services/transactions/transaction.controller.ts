@@ -8,7 +8,7 @@ import Container, { Service } from "typedi";
 class TransactionController {
   private readonly transactionService = Container.get(TransactionService);
 
-   async fetchEthBlockNumber(req: Request, res: Response, next: NextFunction): Promise<void>{
+  public fetchEthBlockNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       // await this.redisClient.connect();
       const ethBlockNumber = await this.transactionService.fetchEthBlockNumber();
@@ -18,14 +18,14 @@ class TransactionController {
     }
   };
 
-   async fetchEthBlockByNumber(req: Request, res: Response, next: NextFunction): Promise<void>{
+  public fetchEthBlockByNumber= async(req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const transaction = await this.transactionService.fetchEthBlockByNumber();
       res.status(200).json({ data: true, message: transaction });
     } catch (error) {
       next(error);
     }
-  };
+  }
 }
 
 export default TransactionController;

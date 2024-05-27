@@ -1,20 +1,20 @@
-import { RpcConnectionManager } from "../../connection-manager/rpcConnectionManager";
-import { HttpException } from "../../exceptions/HttpException";
-import { Transaction } from "../../entity/Transaction";
-import { AppDataSource } from "../../data-source";
-import Container, { Service } from "typedi";
-import { Event } from "../../common/interfaces/event";
-import { EventEmitterService } from "../../eventEmitter";
-import { createClient, RedisClientType } from "redis";
+import { RpcConnectionManager } from '../../common/connection-manager/rpcConnectionManager';
+import { HttpException } from '../../exceptions/HttpException';
+import { Transaction } from '../../entity/Transaction';
+import { AppDataSource } from '../../data-source';
+import Container, { Service } from 'typedi';
+import { Event } from '../../common/interfaces/event';
+import { EventEmitterService } from '../../eventEmitter';
+import { createClient, RedisClientType } from 'redis';
 
-Container.set([{id: 'EventEmitterService', value: new EventEmitterService()}]);
+Container.set([{ id: 'EventEmitterService', value: new EventEmitterService() }]);
 @Service()
 class TransactionService {
   private rpcEndpoints = ['https://rpc.ankr.com/eth', 'https://eth.llamarpc.com', 'https://ethereum-rpc.publicnode.com'];
 
   private rpcConnectionManager = new RpcConnectionManager(this.rpcEndpoints);
   private static redisClient: RedisClientType;
-  private static cacheKey: string
+  private static cacheKey: string;
   static async init() {
     this.redisClient = createClient();
     this.redisClient.on('error', (err: any) => {
@@ -37,9 +37,9 @@ class TransactionService {
     }, 60000); // every 60 seconds
 
     try {
-      TransactionService.init()
+      TransactionService.init();
       const ethBlockNumber = await this.rpcConnectionManager.makeRequest('', 'POST', payload);
-      TransactionService.cacheKey = "blockNumber"
+      TransactionService.cacheKey = 'blockNumber';
       TransactionService.redisClient.set(TransactionService.cacheKey, 30, ethBlockNumber);
       return ethBlockNumber;
     } catch (error) {
@@ -65,21 +65,21 @@ class TransactionService {
     }, 60000); // every 60 seconds
 
     try {
-      TransactionService.init()
+      TransactionService.init();
       const transaction = await this.rpcConnectionManager.makeRequest('', 'POST', payload);
       // const ethBlockNumberResponseData = JSON.stringify(ethBlockNumber);
       // const parseData = JSON.parse(ethBlockNumberResponseData);
       TransactionService.cacheKey = 'blockByNumber';
       TransactionService.redisClient.set(TransactionService.cacheKey, 30, transaction);
-      const transactionsData = transaction.result.transactions;
+      const transactionsData = transaction.result.transactions || null;
       for (let index = 0; index < transactionsData.length; index++) {
         const event: Event = {
           type: 'transaction',
           sender: transactionsData[index]['from'],
           receiver: transactionsData[index]['to'],
-          amount: parseInt(transactionsData[index]['value'], 16).toString(),
+          amount: parseInt(transactionsData[index]['value'], 16),
         };
-        console.log(event);
+        // console.log(event);
 
         await EventEmitterService.emitEvent(event);
         // const transaction = new Transaction();
@@ -94,10 +94,10 @@ class TransactionService {
       }
       return transactionsData;
     } catch (error) {
-      throw new HttpException(400, error);
+      throw new HttpException(404, error);
       // console.error('Error:', error);
     }
   }
 }
 
-export default TransactionService
+export default TransactionService;
