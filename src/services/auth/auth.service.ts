@@ -54,7 +54,10 @@ class AuthenticationService {
     }
     delete existingUser.password;
     this.userRepository.createQueryBuilder().update(User).set({token: token}).where({ email: existingUser.email}).execute();
-    return existingUser;
+    return {
+      ...existingUser,
+      token: token
+    };
   }
 
 }
