@@ -3,38 +3,24 @@ import * as redis from "redis";
 import TransactionService from "./transaction.service";
 import Container, { Service } from "typedi";
 
-Container.set('RedisClient', redis.createClient());
-
-const redisClient = Container.get<redis.RedisClientType>('RedisClient');
-(async () => {
-  await redisClient.connect();
-})();
-
-redisClient.on('error', err => {
-  console.error('Redis error:', err);
-});
 
 @Service()
 class TransactionController {
   private readonly transactionService = Container.get(TransactionService);
 
-  public getEthBlockNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const cacheKey = 'blockNumber';
+   async fetchEthBlockNumber(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
       // await this.redisClient.connect();
-      const ethBlockNumber = await this.transactionService.getEthBlockNumber();
-      redisClient.set(cacheKey, 30, ethBlockNumber);
+      const ethBlockNumber = await this.transactionService.fetchEthBlockNumber();
       res.status(200).json({ data: ethBlockNumber, message: true });
     } catch (error) {
       next(error);
     }
   };
 
-  public getEthBlockByNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const cacheKey = 'blockByNumber';
+   async fetchEthBlockByNumber(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
-      const transaction = await this.transactionService.getEthBlockByNumber();
-      redisClient.set(cacheKey, 30, transaction);
+      const transaction = await this.transactionService.fetchEthBlockByNumber();
       res.status(200).json({ data: true, message: transaction });
     } catch (error) {
       next(error);

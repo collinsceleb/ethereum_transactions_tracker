@@ -23,7 +23,8 @@ class AuthenticationService {
 
     passport.use(
       new JwtStrategy(opts, (jwt_payload, done) => {
-        const user = AppDataSource.manager.findOne((user: { id: User }) => user.id === jwt_payload.id, null);
+
+        const user = AppDataSource.manager.findOne((user: { id: User }) => user.id === jwt_payload.sub, null);
         if (user) {
           return done(null, user);
         } else {
@@ -45,7 +46,6 @@ class AuthenticationService {
     const existingUser = await this.userRepository.findOneBy({ email: authdto.email });
     const comparePassword = await argon2.verify(existingUser.password, authdto.password);
     const token = await this.generateToken(existingUser)
-    console.log(token);
 
     if (!existingUser) {
       throw new HttpException(400, 'User not found');
@@ -54,8 +54,7 @@ class AuthenticationService {
       throw new HttpException(400, 'Incorrect Password');
     }
     delete existingUser.password;
-    const updatedResult = this.userRepository.createQueryBuilder().update(User).set({token: token}).where({ email: existingUser.email}).execute();
-    delete existingUser.token;
+    this.userRepository.createQueryBuilder().update(User).set({token: token}).where({ email: existingUser.email}).execute();
     return existingUser;
   }
 

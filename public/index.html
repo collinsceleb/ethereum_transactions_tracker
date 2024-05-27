@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Transaction Tracker</title>
+</head>
+<body>
+    <h1>Ethereum Transaction Tracker</h1>
+    <div>
+      <ul id="transactions"></ul>
+    </div>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
+    <script>
+        // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2NzM4OTU2LCJleHAiOjE3MTY3NDI1NTZ9.K7iU5tJ8emZ6TztOsfGy8qVQAczP-I89Clgwd5JkBEY'; // Get this token from your login response
+
+        const socket = io('http://localhost:5000');
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+
+            // Subscribe to all events
+            socket.emit('subscribe', 'all');
+
+            // Subscribe to events where address1 is either the sender or receiver
+            socket.emit('subscribe', `address:${event.sender}` || `address:${event.receiver}`);
+
+            // Subscribe to events where address1 is the sender
+            socket.emit('subscribe', `sender:${event.sender}`);
+
+            // Subscribe to events where address1 is the receiver
+            socket.emit('subscribe', `receiver:${event.receiver}`);
+
+            // Subscribe to events with amounts in specific ranges
+            socket.emit('subscribe', 'range:0-100');
+            socket.emit('subscribe', 'range:100-500');
+            socket.emit('subscribe', 'range:500-2000');
+            socket.emit('subscribe', 'range:2000-5000');
+            socket.emit('subscribe', 'range:>5000');
+        });
+
+        socket.on('event', (event) => {
+            console.log('Received event:', event);
+            const transactionsDiv = document.getElementById('transactions');
+            transactionsDiv.innerHTML += `<p>${JSON.stringify(transaction)}</p>`;
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+    </script>
+</body>
+</html>
