@@ -3,6 +3,8 @@ import { DataSource } from "typeorm"
 import { User } from "./entity/User"
 import dotenv from "dotenv";
 import { Transaction } from "./entity/Transaction";
+import { RefreshToken } from "entity/RefreshToken";
+import { Device } from "entity/Device";
 
 
 dotenv.config()
@@ -16,7 +18,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [User, Transaction],
+  entities: [User, Transaction, RefreshToken, Device],
   migrations: [],
   subscribers: [],
 });
