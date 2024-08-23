@@ -3,8 +3,8 @@ import { DataSource } from "typeorm"
 import { User } from "./entity/User"
 import dotenv from "dotenv";
 import { Transaction } from "./entity/Transaction";
-import { RefreshToken } from "entity/RefreshToken";
-import { Device } from "entity/Device";
+import { RefreshToken } from "./entity/RefreshToken";
+import { Device } from "./entity/Device";
 
 
 dotenv.config()

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
 
 @Entity('device')
 export class Device {
@@ -46,8 +47,11 @@ export class Device {
 
   @Column()
   longitude: number;
-  
+
   @Column()
   region: string;
 
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

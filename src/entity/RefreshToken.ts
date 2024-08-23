@@ -24,7 +24,7 @@ export class RefreshToken {
   @Column({ default: false })
   isRevoked: boolean;
 
-  @Column( { default: new Date() })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   expiresAt: Date;
 }
 
