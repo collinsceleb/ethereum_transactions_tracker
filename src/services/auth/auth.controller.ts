@@ -10,7 +10,7 @@ class AuthenticationController {
   public login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const authdto: AuthDto = req.body;
-      const loginUser = await this.authService.login(authdto);
+      const loginUser = await this.authService.login(authdto, req);
       res.status(200).json({ data: loginUser, message: true });
     } catch (error) {
       next(error);

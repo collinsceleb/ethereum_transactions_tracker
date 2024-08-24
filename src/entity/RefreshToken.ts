@@ -7,7 +7,7 @@ export class RefreshToken {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   token: string;
 
   @OneToOne(() => User)

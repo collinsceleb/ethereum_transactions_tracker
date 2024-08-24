@@ -9,8 +9,8 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import UAParser from 'ua-parser-js';
-import { RefreshToken } from 'entity/RefreshToken';
-import { Device } from 'entity/Device';
+import { RefreshToken } from '../../entity/RefreshToken';
+import { Device } from '../../entity/Device';
 import { Request } from 'express';
 import * as crypto from 'crypto';
 import axios from 'axios';
@@ -79,11 +79,11 @@ class AuthenticationService {
         user: { id: user.id },
         ip: ipAddress,
         userAgent,
-        city: location.city,
-        country: location.country,
-        region: location.region,
-        latitude: location.latitude,
-        longitude: location.longitude,
+        // city: location.city,
+        // country: location.country,
+        // region: location.region,
+        // latitude: location.latitude,
+        // longitude: location.longitude,
       });
       await this.deviceRepository.save(device);
     }
